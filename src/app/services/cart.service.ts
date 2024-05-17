@@ -25,7 +25,9 @@ export class CartService {
         }
       }
 
-      alreadyExistsInCart = (existingCartItem != undefined);}
+      existingCartItem = this.cartItems.find(tempCarItem=> tempCarItem.id === theCartItem.id);
+      alreadyExistsInCart = (existingCartItem != undefined);
+    }
 
       if(alreadyExistsInCart){
         existingCartItem!.quantity++;
