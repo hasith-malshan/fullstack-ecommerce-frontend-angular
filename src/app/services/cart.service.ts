@@ -15,7 +15,7 @@ export class CartService {
 
   addToCart(theCartItem: CartItem) {
     let alreadyExistsInCart: boolean = false;
-    let existingCartItem: CartItem = undefined;
+    let existingCartItem: CartItem | undefined = undefined;
 
     if (this.cartItems.length > 0){
       for (let tempCartItem of this.cartItems) {
@@ -28,10 +28,11 @@ export class CartService {
       alreadyExistsInCart = (existingCartItem != undefined);}
 
       if(alreadyExistsInCart){
-        existingCartItem.quantity++;
+        existingCartItem!.quantity++;
       }else{
         this.cartItems.push(theCartItem);
       }
+
 
       this.computeCartTotals();
   }
@@ -44,5 +45,16 @@ export class CartService {
       totalPriceValue += currentCartItem.unitPrice * currentCartItem.quantity;
       totalQuantityValue += currentCartItem.quantity;
     }
+
+    this.totalPrice.next(totalPriceValue);
+    this.totalQuantity.next(totalQuantityValue);
+
+    logCartData(totalPriceValue,totalQuantityValue);
+
+
   }
 }
+function logCartData(totalPriceValue: number, totalQuantityValue: number) {
+ console.log(totalPriceValue,totalQuantityValue);
+}
+
