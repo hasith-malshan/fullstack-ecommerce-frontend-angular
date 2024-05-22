@@ -57,6 +57,6 @@ export class CartService {
   }
 }
 function logCartData(totalPriceValue: number, totalQuantityValue: number) {
- console.log(totalPriceValue,totalQuantityValue);
+ console.log(`Cart Service Log ` + `| total price `+totalPriceValue.toFixed(2) + ` | Quantity ` + totalQuantityValue);
 }
 
