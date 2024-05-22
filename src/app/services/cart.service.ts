@@ -17,7 +17,7 @@ export class CartService {
     let alreadyExistsInCart: boolean = false;
     let existingCartItem: CartItem | undefined = undefined;
 
-    if (this.cartItems.length > 0){
+    if (this.cartItems.length > 0) {
       // for (let tempCartItem of this.cartItems) {
       //   if (tempCartItem.id === theCartItem.id) {
       //     existingCartItem = tempCartItem;
@@ -25,25 +25,26 @@ export class CartService {
       //   }
       // }
 
-      existingCartItem = this.cartItems.find(tempCarItem=> tempCarItem.id === theCartItem.id);
-      alreadyExistsInCart = (existingCartItem != undefined);
+      existingCartItem = this.cartItems.find(
+        (tempCarItem) => tempCarItem.id === theCartItem.id
+      );
+      alreadyExistsInCart = existingCartItem != undefined;
     }
 
-      if(alreadyExistsInCart){
-        existingCartItem!.quantity++;
-      }else{
-        this.cartItems.push(theCartItem);
-      }
+    if (alreadyExistsInCart) {
+      existingCartItem!.quantity++;
+    } else {
+      this.cartItems.push(theCartItem);
+    }
 
-
-      this.computeCartTotals();
+    this.computeCartTotals();
   }
 
   computeCartTotals() {
-    let totalPriceValue : number = 0
-    let totalQuantityValue : number = 0
+    let totalPriceValue: number = 0;
+    let totalQuantityValue: number = 0;
 
-    for(let currentCartItem of this.cartItems){
+    for (let currentCartItem of this.cartItems) {
       totalPriceValue += currentCartItem.unitPrice * currentCartItem.quantity;
       totalQuantityValue += currentCartItem.quantity;
     }
@@ -51,12 +52,35 @@ export class CartService {
     this.totalPrice.next(totalPriceValue);
     this.totalQuantity.next(totalQuantityValue);
 
-    logCartData(totalPriceValue,totalQuantityValue);
-
-
+    this.logCartData(totalPriceValue, totalQuantityValue);
   }
+
+  decrementQuantity(theCartItem: CartItem) {
+   theCartItem.quantity--;
+
+   if(theCartItem.quantity == 0){
+    this.remove(theCartItem);
+   }else{
+    this.computeCartTotals();
+   }
+  }
+
+  remove(theCartItem: CartItem) {
+    const itemIndex = this.cartItems.findIndex(tempCartItem => tempCartItem.id === theCartItem.id);
+    if(itemIndex > -1){
+      this.cartItems.splice(itemIndex,1);
+      this.computeCartTotals();
+    }
+  }
+
+  logCartData(totalPriceValue: number, totalQuantityValue: number) {
+  console.log(
+    `Cart Service Log ` +
+      `| total price ` +
+      totalPriceValue.toFixed(2) +
+      ` | Quantity ` +
+      totalQuantityValue
+  );
 }
-function logCartData(totalPriceValue: number, totalQuantityValue: number) {
- console.log(`Cart Service Log ` + `| total price `+totalPriceValue.toFixed(2) + ` | Quantity ` + totalQuantityValue);
 }
 

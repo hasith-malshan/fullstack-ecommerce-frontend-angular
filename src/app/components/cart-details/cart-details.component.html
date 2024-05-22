@@ -28,7 +28,11 @@
 
                 <div class="row no-gutters">
                   <div class="col-1">
-                    <button (click)="incrementQuantity(tempCartItem)" type="button" class="btn btn-primary btn-sm">
+                    <button
+                      (click)="incrementQuantity(tempCartItem)"
+                      type="button"
+                      class="btn btn-primary btn-sm"
+                    >
                       <i class="fa fa-plus"></i>
                     </button>
                   </div>
@@ -36,9 +40,16 @@
                     {{ tempCartItem.quantity }}
                   </div>
                   <div class="col-2">
-                    <button type="button" class="btn btn-primary btn-sm">
+                    <button
+                      type="button"
+                      (click)="decrementQuantity(tempCartItem)"
+                      class="btn btn-primary btn-sm"
+                    >
                       <i class="fa fa-minus"></i>
                     </button>
+                  </div>
+                  <div class="col-2">
+                    <button (click)="removeItem(tempCartItem)" class="btn btn-danger btn-sm">Remove</button>
                   </div>
                 </div>
 
