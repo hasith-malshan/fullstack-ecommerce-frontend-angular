@@ -50,8 +50,15 @@
             </div>
             <div class="col-md-9">
               <div class="input-space">
-                <select name="country" id="" formControlName="country">
-                  <option value="">todo</option>
+                <select
+                  name="country"
+                  id=""
+                  formControlName="country"
+                  (change)="getState('shippingAddress')"
+                >
+                  <option *ngFor="let country of countries" [ngValue]="country">
+                    {{ country.name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -86,7 +93,12 @@
             <div class="col-md-9">
               <div class="input-space">
                 <select name="state" id="" formControlName="state">
-                  <option value="">todo</option>
+                  <option
+                    *ngFor="let state of shippingAddressStates"
+                    [ngValue]="state"
+                  >
+                    {{ state.name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -126,8 +138,10 @@
             </div>
             <div class="col-md-9">
               <div class="input-space">
-                <select name="country" id="" formControlName="country">
-                  <option value="">todo</option>
+                <select name="country" id="" formControlName="country" (change)="getState('billingAddress')">
+                  <option *ngFor="let country of countries" [ngValue]="country">
+                    {{ country.name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -162,7 +176,12 @@
             <div class="col-md-9">
               <div class="input-space">
                 <select name="state" id="" formControlName="state">
-                  <option value="">todo</option>
+                  <option
+                    *ngFor="let state of billingAddressStates"
+                    [ngValue]="state"
+                  >
+                    {{ state.name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -255,7 +274,7 @@
                   formControlName="expirationMonth"
                 >
                   <option *ngFor="let months of creditCardMonths">
-                    {{months}}
+                    {{ months }}
                   </option>
                 </select>
               </div>
@@ -274,8 +293,8 @@
                   formControlName="expirationYear"
                   (change)="handleMonthsAndYears()"
                 >
-                   <option *ngFor="let years of creditCardYears">
-                    {{years}}
+                  <option *ngFor="let years of creditCardYears">
+                    {{ years }}
                   </option>
                 </select>
               </div>
@@ -286,8 +305,8 @@
         <!-- Order Details -->
         <div class="form-area">
           <h3>Review your order</h3>
-          <p>Total Quantity {{totalQuantity}} </p>
-          <p>Total Price {{totalPrice}}</p>
+          <p>Total Quantity {{ totalQuantity }}</p>
+          <p>Total Price {{ totalPrice }}</p>
         </div>
 
         <div class="text-center">
