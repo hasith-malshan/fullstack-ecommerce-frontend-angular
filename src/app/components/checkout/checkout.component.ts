@@ -92,6 +92,10 @@ export class CheckoutComponent implements OnInit {
     console.log(this.checkoutFromGroup.get('customer')?.value.email);
   }
 
+  getFirstName(){return this.checkoutFromGroup.get('customer.firstName');}
+  getLastName(){return this.checkoutFromGroup.get('customer.lastName');}
+  getEmail(){return this.checkoutFromGroup.get('customer.email');}
+
   copyShoppingAddressToBillingAddress(event: any) {
     if (event.target.checked) {
       this.checkoutFromGroup.controls['billingAddress'].setValue(
