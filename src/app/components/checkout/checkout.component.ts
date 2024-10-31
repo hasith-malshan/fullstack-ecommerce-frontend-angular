@@ -4,6 +4,7 @@ import { last } from 'rxjs';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { ShopFormService } from 'src/app/services/shop-form.service';
+import { CustomValidators } from 'src/app/validators/custom-validators';
 
 @Component({
   selector: 'app-checkout',
@@ -33,10 +34,12 @@ export class CheckoutComponent implements OnInit {
         firstName: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
+          CustomValidators.notOnlyWhiteSpace,
         ]),
         lastName: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
+          CustomValidators.notOnlyWhiteSpace,
         ]),
         email: new FormControl('', [
           Validators.required,
@@ -88,13 +91,16 @@ export class CheckoutComponent implements OnInit {
   }
 
   onSubmit() {
+    if(this.checkoutFromGroup.invalid){
+      this.checkoutFromGroup.markAllAsTouched();
+    }
     console.log('Handling form Submition');
     console.log(this.checkoutFromGroup.get('customer')?.value.email);
   }
 
-  getFirstName(){return this.checkoutFromGroup.get('customer.firstName');}
-  getLastName(){return this.checkoutFromGroup.get('customer.lastName');}
-  getEmail(){return this.checkoutFromGroup.get('customer.email');}
+  get firstName(){return this.checkoutFromGroup.get('customer.firstName');}
+  get lastName(){return this.checkoutFromGroup.get('customer.lastName');}
+  get email(){return this.checkoutFromGroup.get('customer.email');}
 
   copyShoppingAddressToBillingAddress(event: any) {
     if (event.target.checked) {
