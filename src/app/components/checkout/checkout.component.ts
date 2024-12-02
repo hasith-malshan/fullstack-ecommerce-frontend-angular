@@ -8,6 +8,7 @@ import {
 import { last } from 'rxjs';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
+import { CartService } from 'src/app/services/cart.service';
 import { ShopFormService } from 'src/app/services/shop-form.service';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 
@@ -17,7 +18,7 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
   styleUrls: ['./checkout.component.css'],
 })
 export class CheckoutComponent implements OnInit {
-  checkoutFromGroup: FormGroup;
+  checkoutFromGroup!: FormGroup;
 
   totalPrice: number = 0;
   totalQuantity: number = 0;
@@ -32,8 +33,13 @@ export class CheckoutComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private shopFormService: ShopFormService
-  ) {
+    private shopFormService: ShopFormService,
+    private cartService: CartService
+  ) {}
+
+  ngOnInit(): void {
+    this.reviewCartDetails();
+
     this.checkoutFromGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('', [
@@ -121,9 +127,7 @@ export class CheckoutComponent implements OnInit {
         expirationYear: new FormControl('', [Validators.required]),
       }),
     });
-  }
 
-  ngOnInit(): void {
     const startMonth: number = new Date().getMonth() + 1;
 
     this.shopFormService.getCreditCardMonths(startMonth).subscribe((data) => {
@@ -140,6 +144,16 @@ export class CheckoutComponent implements OnInit {
       console.log('Retrived Countries' + JSON.stringify(data));
       this.countries = data;
     });
+  }
+
+  reviewCartDetails() {
+    this.cartService.totalQuantity.subscribe(
+      (totalQuantity) => (this.totalQuantity = totalQuantity)
+    );
+
+     this.cartService.totalPrice.subscribe(
+       (totalPrice) => (this.totalPrice = totalPrice)
+     );
   }
 
   onSubmit() {
